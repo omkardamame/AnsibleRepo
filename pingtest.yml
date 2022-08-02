@@ -1,0 +1,4 @@
+- name: Ping Test via Git
+  hosts: localhost
+  ping: 8.8.8.8
+  
