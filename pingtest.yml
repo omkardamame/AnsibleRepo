@@ -3,6 +3,16 @@
   hosts: localhost
   gather_facts: false
   tasks:
-
-  - name: ping test
-    ping:
+  - name: install python SDK
+    pip:
+      name: docker-py
+  - name: installing collection
+    action: shell ansible-galaxy collection install community.docker
+  
+  - name: docker pull
+    docker_image:
+      name: httpd
+      tag: latest
+      source: pull
+  
+  
