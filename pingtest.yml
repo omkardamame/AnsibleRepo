@@ -7,7 +7,7 @@
     pip:
       name: docker-py
   - name: installing collection
-    action: ansible-galaxy collection install community.docker
+    action: shell ansible-galaxy collection install community.docker
   
   - name: docker pull
     docker_image:
