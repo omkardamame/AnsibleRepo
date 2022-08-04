@@ -4,5 +4,8 @@
   gather_facts: false
   tasks:
 
-  - name: ping test
-    ping:
+  - name: docker pull
+    docker_image:
+      name: httpd
+      tag: latest
+      source: pull
