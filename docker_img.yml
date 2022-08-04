@@ -1,5 +1,5 @@
 - name: Docker Setup Initialization
-- hosts: 192.168.12.19
+  hosts: 192.168.12.19
   tasks: 
    - name: Configuring Docker Repository
      yum_repository:
