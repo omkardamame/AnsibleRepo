@@ -48,11 +48,6 @@
        path: "/root/pv"
        state: directory
 
-   - name: Copying the HTML code in the Directory
-     copy: 
-       src: "/root/index.html"
-       dest: "/root/pv"
-
    - name: Launching an HTTPD Container
      when: z.failed == false
      docker_container:
