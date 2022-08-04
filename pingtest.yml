@@ -6,10 +6,13 @@
   - name: install python SDK
     pip:
       name: docker-py
-      
+  - name: installing collection
+    action: ansible-galaxy collection install community.docker
   
   - name: docker pull
     docker_image:
       name: httpd
       tag: latest
       source: pull
+  
+  
