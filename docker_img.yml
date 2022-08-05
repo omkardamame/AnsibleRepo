@@ -47,6 +47,14 @@
      file:
        path: "/root/pv"
        state: directory
+       
+   - name: Copying the HTML code in the Directory
+     copy:
+       remote_src: yes        
+       src: "/root/index.html"
+       dest: "/root/pv"
+               
+
 
    - name: Launching an HTTPD Container
      when: z.failed == false
