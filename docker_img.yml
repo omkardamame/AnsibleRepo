@@ -16,7 +16,7 @@
         description: "Docker Repo"
         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
         gpgcheck: no
-      when: ansible_facts['distribution'] == "CentOS"
+      when: ansible_facts['distribution'] == "RHEL"
         
     - name: Installing Docker on UBUNTU
       apt:
@@ -26,16 +26,17 @@
       when: ansible_facts['distribution'] == "Ubuntu"
        
     - name: Installing Docker for CentOS
+      when: ansible_facts['distribution'] == "RHEL"
       package:
         name: "{{docker_cent_pkg}}"
         state: present
       register: p
-      when: ansible_facts['distribution'] == "CentOS"
+      
 
     - name: Checking Install Status
       debug:
         var: p.failed
-      when: ansible_facts['distribution'] == "CentOS"
+      when: ansible_facts['distribution'] == "RHEL"
 
     - name: Checking Install Status
       debug:
