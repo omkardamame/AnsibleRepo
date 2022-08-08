@@ -10,7 +10,7 @@
     - name: Checking OS Distro and Major version
       debug: msg="{{ver}}"
        
-    - name: For CentOS
+    - name: For RHEL
       yum_repository:
         name: Docker
         description: "Docker Repo"
@@ -25,7 +25,7 @@
       register: u
       when: ansible_facts['distribution'] == "Ubuntu"
        
-    - name: Installing Docker for CentOS
+    - name: Installing Docker for RHEL
       when: ansible_facts['distribution'] == "RHEL"
       package:
         name: "{{docker_cent_pkg}}"
