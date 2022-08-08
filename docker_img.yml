@@ -8,7 +8,7 @@
        
   tasks:
     - name: Checking OS Distro and Major version
-      debug: msg="{{ver}}"
+      debug: msg="The Distro is {{ansible_distribution}} Major Version is {{ver}}"
        
     - name: For RHEL
       yum_repository:
@@ -22,7 +22,6 @@
       apt:
          name: docker.io
          state: latest
-      register: u
       when: ansible_facts['distribution'] == "Ubuntu"
        
     - name: Installing Docker for RHEL
@@ -30,32 +29,13 @@
       package:
         name: "{{docker_cent_pkg}}"
         state: present
-      register: p
       
 
-    - name: Checking Install Status
-      debug:
-        var: p.failed
-      when: ansible_facts['distribution'] == "RHEL"
-
-    - name: Checking Install Status
-      debug:
-        var: u.failed
-      when: ansible_facts['distribution'] == "Ubuntu" 
-
     - name: Starting Docker Daemon
       service:
        name: docker
        state: started
        enabled: yes
-      when: u.failed == false
-
-    - name: Starting Docker Daemon
-      service:
-       name: docker
-       state: started
-       enabled: yes
-      when: p.failed == false
 
     - name: Install Python packge for Docker
       pip:
