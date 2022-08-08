@@ -1,5 +1,5 @@
 - name: Docker_Env_Setup
-  hosts: localhost
+  hosts: 192.168.12.19
   vars:
     docker_index: /usr/local/apache2/htdocs
     httpd_index: /root/pv
