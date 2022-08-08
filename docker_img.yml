@@ -51,14 +51,14 @@
 
    - name: Creating a Persistent Volume Dir
      file:
-       path: "/root/pv"
+       path: "{{httpd_index}}"
        state: directory
        
    - name: Copying the HTML code in the Directory
      copy:
        remote_src: yes        
        src: "/root/index.html"
-       dest: "/root/pv"
+       dest: "{{httpd_index}}"
                
 
 
@@ -73,4 +73,4 @@
        ports:
          - "8888:80"
        volumes: 
-         - /root/pv:/usr/local/apache2/htdocs
+         - "{{httpd_index}}:{{docker_path}}"
