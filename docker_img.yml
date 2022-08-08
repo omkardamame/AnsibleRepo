@@ -35,9 +35,6 @@
     - name: Checking Install Status
       debug:
         var: y.failed
-    - name: Checking Install Status
-      debug:
-       var: y.failed
 
     - name: Starting Docker Daemon
       service:
