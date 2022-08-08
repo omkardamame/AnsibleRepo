@@ -22,26 +22,39 @@
       apt:
          name: docker.io
          state: latest
-      register: y
+      register: u
       when: ansible_facts['distribution'] == "Ubuntu"
        
     - name: Installing Docker for CentOS
       package:
         name: "{{docker_cent_pkg}}"
         state: present
-      register: y
+      register: p
       when: ansible_facts['distribution'] == "CentOS"
-       
+
     - name: Checking Install Status
       debug:
-        var: y.failed
+        var: p.failed
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Checking Install Status
+      debug:
+        var: u.failed
+      when: ansible_facts['distribution'] == "Ubuntu" 
 
     - name: Starting Docker Daemon
       service:
        name: docker
        state: started
        enabled: yes
-      when: y.failed == false
+      when: u.failed == false
+
+    - name: Starting Docker Daemon
+      service:
+       name: docker
+       state: started
+       enabled: yes
+      when: p.failed == false
 
     - name: Install Python packge for Docker
       pip:
