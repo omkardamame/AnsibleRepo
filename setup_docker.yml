@@ -1,7 +1,6 @@
 ---
 - name: TEST SURVEY
   hosts: localhost
-  become: false
   gather_facts: false
   
   tasks:
