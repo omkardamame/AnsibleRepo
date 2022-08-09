@@ -42,7 +42,7 @@
        name: docker
        state: started
        enabled: yes
-      when: y.failed == "false"
+      when: y.failed == false
 
     - name: Install Python packge for Docker
       pip:
@@ -56,7 +56,7 @@
       register: z
     - name: Checking Pull Status
       debug: 
-       var: z.failed
+       var: z
 
     - name: Creating a Persistent Volume Dir
       file:
