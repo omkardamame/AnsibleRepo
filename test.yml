@@ -1,5 +1,5 @@
 - name: TEST SURVEY
-  hosts: localhost
+  hosts: 192.168.12.19
   tasks:
   
     - name: Creating File
