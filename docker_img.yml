@@ -3,7 +3,7 @@
   vars:
     docker_path: /usr/local/apache2/htdocs
     httpd_index: /root/pv
-    docker_cent_pkg: docker-ce-18.09.1-3.el7.x86_64
+    docker_cent_pkg: docker-ce-18.09.1-3.el7.x86_64       # create a var file and put these variable there
     ver: "{{ansible_distribution_major_version}}"
        
   tasks:
@@ -12,7 +12,7 @@
        
     - name: For RHEL
       yum_repository:
-        name: Docker
+        name: Docker                    # make use of variable 
         description: "Docker Repo"
         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
         gpgcheck: no
@@ -20,7 +20,7 @@
         
     - name: Installing Docker on UBUNTU
       apt:
-         name: docker.io
+         name: docker.io              # make use of variable 
          state: latest
       register: y
       when: ansible_facts['distribution'] == "Ubuntu"
@@ -75,7 +75,7 @@
       when: z.failed == false
       docker_container:
        name: apache-server
-       image: httpd
+       image: httpd             # make use of variable 
        state: started
        exposed_ports:
          - "80"
