@@ -1,5 +1,6 @@
 - name: TEST SURVEY
   hosts: 192.168.12.19
+  become: false
   tasks:
   
     - name: Creating File
