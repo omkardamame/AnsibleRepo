@@ -5,5 +5,5 @@
   
     - name: Creating File
       file:
-        path: $HOME/"{{testfile}}"
+        path: /root/"{{testfile}}"
         state: touch
