@@ -22,6 +22,7 @@
       apt:
          name: docker.io
          state: latest
+      register: y
       when: ansible_facts['distribution'] == "Ubuntu"
        
     - name: Installing Docker for RHEL
@@ -29,6 +30,11 @@
       package:
         name: "{{docker_cent_pkg}}"
         state: present
+      register: y
+      
+    - name: Checking Installation Status
+      debug:
+        var: y.failed
       
 
     - name: Starting Docker Daemon
@@ -36,6 +42,7 @@
        name: docker
        state: started
        enabled: yes
+      when: y.failed == "false"
 
     - name: Install Python packge for Docker
       pip:
@@ -49,7 +56,7 @@
       register: z
     - name: Checking Pull Status
       debug: 
-       var: z
+       var: z.failed
 
     - name: Creating a Persistent Volume Dir
       file:
