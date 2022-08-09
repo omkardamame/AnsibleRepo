@@ -1,0 +1,8 @@
+- name: TEST SURVEY
+  hosts: localhost
+  tasks:
+  
+    - name: Creating File
+      file:
+        path: $HOME/"{{testfile}}"
+        state: touch
