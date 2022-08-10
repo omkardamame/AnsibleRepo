@@ -1,18 +1,16 @@
 - name: Docker_Env_Setup
   hosts: 192.168.12.19
-  vars:
-    docker_index: /usr/local/apache2/htdocs
-    httpd_index: /root/pv
-    docker_cent_pkg: docker-ce-18.09.1-3.el7.x86_64
-    ver: "{{ansible_distribution_major_version}}"
+  vars_files:
+    - varsfile.yml
+    
        
   tasks:
     - name: Checking OS Distro and Major version
-      debug: msg="{{ver}}"
+      debug: msg="The Distro is {{ansible_distribution}} Major Version is {{ver}}"
        
     - name: For RHEL
       yum_repository:
-        name: Docker
+        name: Docker                    # make use of variable 
         description: "Docker Repo"
         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
         gpgcheck: no
@@ -20,9 +18,9 @@
         
     - name: Installing Docker for UBUNTU
       apt:
-         name: docker.io
+         name: docker.io              # make use of variable 
          state: latest
-      register: u
+      register: y
       when: ansible_facts['distribution'] == "Ubuntu"
        
     - name: Installing Docker for RHEL
@@ -30,32 +28,19 @@
       package:
         name: "{{docker_cent_pkg}}"
         state: present
-      register: p
+      register: y
+      
+    - name: Checking Installation Status
+      debug:
+        var: y.failed
       
 
-    - name: Checking Install Status
-      debug:
-        var: p.failed
-      when: ansible_facts['distribution'] == "RHEL"
-
-    - name: Checking Install Status
-      debug:
-        var: u.failed
-      when: ansible_facts['distribution'] == "Ubuntu" 
-
     - name: Starting Docker Daemon
       service:
        name: docker
        state: started
        enabled: yes
-      when: u.failed == false
-
-    - name: Starting Docker Daemon
-      service:
-       name: docker
-       state: started
-       enabled: yes
-      when: p.failed == false
+      when: y.failed == false
 
     - name: Install Python packge for Docker
       pip:
@@ -88,7 +73,7 @@
       when: z.failed == false
       docker_container:
        name: apache-server
-       image: httpd
+       image: httpd             # make use of variable 
        state: started
        exposed_ports:
          - "80"
