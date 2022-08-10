@@ -18,7 +18,7 @@
         gpgcheck: no
       when: ansible_facts['distribution'] == "RHEL"
         
-    - name: Installing Docker on UBUNTU
+    - name: Installing Docker for UBUNTU
       apt:
          name: docker.io
          state: latest
