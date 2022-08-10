@@ -1,7 +1,5 @@
 - name: Docker_Env_Setup
   hosts: 192.168.12.19
-  vars_files:
-    - varsfile.yml
     
        
   tasks:
