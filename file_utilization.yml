@@ -1,16 +1,33 @@
 ---
- - name: Files Utilization in LINUX 
-   hosts: localhost
-   tasks:
-      - name: Commencing Shell Command
-        shell: df -TH
-        register: y
+  - name: Files Utilization in LINUX
+    hosts: 192.168.12.19
+    vars_files:
+       - password.yml
+    tasks:
+       - name: Commencing Shell Command
+         shell: df
+         register: y
 
-      - name: showing output
-        debug:
-          var: y.stdout_lines
-      
-      - name: Copying Output to report File
-        copy:
-          content: "{{y.stdout}}"
-          dest: "File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}"
+       - name: Simpler Form
+         shell: df -TH
+         register: z
+
+       - name: showing output
+         debug:
+           var: y.stdout_lines
+
+       - name: Copying Output to report File
+         copy:
+           content: "{{y.stdout}}{{z.stdout}}"
+           dest: "File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt"
+
+       - name: Sending the mail with its Report
+         mail:
+           host: smtp.gmail.com
+           port: 25
+           attach: File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt
+           username: prasad.dhupkar@prodevans.com
+           password: "{{pswd}}"
+           to: pmdhupkar@gmail.com
+           body:
+            Please Find Below the attached Report for the {{ansible_hostname}} at {{ansible_date_time.date}}
