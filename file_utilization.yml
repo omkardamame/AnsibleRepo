@@ -2,7 +2,7 @@
   - name: Files Utilization in LINUX
     hosts: 192.168.12.19
     vars_files:
-       - password.yml
+       - /root/prasad/password.yml
     tasks:
        - name: Executing Shell Commands
          shell: df
