@@ -4,7 +4,7 @@
     vars_files:
        - password.yml
     tasks:
-       - name: Commencing Shell Command
+       - name: Executing Shell Commands
          shell: df
          register: y
 
@@ -18,7 +18,7 @@
 
        - name: Copying Output to report File
          copy:
-           content: "{{y.stdout}}{{z.stdout}}"
+           content: "{{y.stdout}}\n \n \n Simpler Format Below: \n \n {{z.stdout}}"
            dest: "File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt"
 
        - name: Sending the mail with its Report
@@ -28,6 +28,7 @@
            attach: File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt
            username: prasad.dhupkar@prodevans.com
            password: "{{pswd}}"
-           to: pmdhupkar@gmail.com
+           to: siba.kumar@prodevans.com
+           cc: prasad.dhupkar@prodevans.com
            body:
             Please Find Below the attached Report for the {{ansible_hostname}} at {{ansible_date_time.date}}
