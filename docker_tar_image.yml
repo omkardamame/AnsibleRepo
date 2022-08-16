@@ -2,7 +2,11 @@
 - name: Docker playbook
   hosts: 192.168.12.19 
   remote_user: root
-
+  vars:
+   docker_img: httpd
+   docker_reg_local: localhost:5000/httpd:latest
+   docker_path: /usr/local/apache2/htdocs
+   httpd_index: /root/pv
   tasks:
    - name: Adding Registry Container Image to Store Images Locally
      docker_image:
@@ -21,18 +25,18 @@
 
    - name: Adding Image From TAR file 
      docker_image:
-       name: webapp:latest
-       load_path: webapp.tar
+       name: "{{docker_img}}:latest"
+       load_path: "{{docker_img}}.tar"
 
 
    - name: Tagging the container
      docker_image:
-       name: methos28/webapp:latest
-       repository: localhost:5000/webapp:latest
+       name: "{{docker_img}}:latest"
+       repository: "{{docker_reg_local}}"
 
    - name: Pushing Container to Local Registry
      docker_image:
-       name: localhost:5000/webapp:latest
+       name: "{{docker_reg_local}}"
        push: yes
 
 #  - name: Tag and push to local registry
@@ -45,11 +49,13 @@
 
    - name: Launching a Container
      docker_container:
-       name: WebApp
-       image: localhost:5000/webapp:latest
+       name: apache-server
+       image: "{{docker_reg_local}}"
        state: started
        exposed_ports:
-         - "7777"
+         - "80"
        ports:
-         - "8888:7777"
+         - "2525:80"
+       volumes:
+         - "{{httpd_index}}:{{docker_path}}"
       
