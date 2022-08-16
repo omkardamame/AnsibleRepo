@@ -11,14 +11,44 @@
        - name: Simpler Form
          shell: df -TH
          register: z
-
-       - name: showing output
+       - name: check the filessystem utilization
+         shell: df -h "{{ item }}" | tail -n 1 | awk {'print $5 '}  | sed 's/%//g'
+         loop:
+          - /dev
+          - /dev/shm
+          - /run
+          - /sys/fs/cgroup
+          - /
+          - /usr
+          - /opt
+          - /tmp
+          - /home
+          - /var
+          - /boot
+          - /var/log
+          - /run/user/0
+         register: test
+       - name: getting the Test Output
+         debug: 
+          msg: "{{test}}"
+       - debug:
+          msg: "{{ item.item}}  is {{item.stdout}}%"
+         loop: "{{ test.results }}"
+         loop_control:
+          label: "{{ ansible_loop_var }}"
+       
+       - name: print the filesize > 10%
          debug:
-           var: y.stdout_lines
+         msg: "The file {{ item.item }} size  > 10%, which is = {{ item.stdout }}%"
+         when: "{{ item.stdout }} > 10"
+         loop: "{{ test.results }}"
+         loop_control:
+          label: "{{ ansible_loop_var }}"
+
 
        - name: Copying Output to report File
          copy:
-           content: "{{y.stdout}}\n \n \n Simpler Format Below: \n \n {{z.stdout}}"
+           content: "{{z.stdout}}\n \n \n Warning: \n \n {{test.results}}"
            dest: "File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt"
 
        - name: Sending the mail with its Report
