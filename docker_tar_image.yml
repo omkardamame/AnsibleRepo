@@ -1,0 +1,55 @@
+---
+- name: Docker playbook
+  hosts: 192.168.12.19 
+  remote_user: root
+
+  tasks:
+   - name: Adding Registry Container Image to Store Images Locally
+     docker_image:
+       name: registry
+       tag: 2
+   
+   - name: Starting the Registry
+     docker_container:
+       name: registry
+       image: registry:2
+       state: started
+       exposed_ports:
+         - "5000"
+       ports:
+         - "5000:5000"
+
+   - name: Adding Image From TAR file 
+     docker_image:
+       name: webapp:latest
+       load_path: webapp.tar
+
+
+   - name: Tagging the container
+     docker_image:
+       name: methos28/webapp:latest
+       repository: localhost:5000/webapp:latest
+
+   - name: Pushing Container to Local Registry
+     docker_image:
+       name: localhost:5000/webapp:latest
+       push: yes
+
+#  - name: Tag and push to local registry
+#    docker_image:
+#      name: localhost:5000/httpd
+#      tag: v1
+#      push: yes
+#      source: load
+#      load_path: httpd.tar
+
+   - name: Launching a Container
+     docker_container:
+       name: WebApp
+       image: localhost:5000/webapp:latest
+       state: started
+       exposed_ports:
+         - "7777"
+       ports:
+         - "8888:7777"
+      

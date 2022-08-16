@@ -26,7 +26,7 @@
            host: smtp.gmail.com
            port: 25
            attach: File_Utlization_report_{{ansible_hostname}}_{{ansible_date_time.date}}.txt
-           username: prasad.dhupkar@prodevans.com
+           username: "{{user}}"
            password: "{{pswd}}"
            to: pmdhupkar@gmail.com
            cc: prasad.dhupkar@prodevans.com
