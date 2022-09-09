@@ -57,5 +57,5 @@
        ports:
          - "2525:80"
        volumes:
-         - "{{httpd_index}}:{{docker_path}}"
+         - "{{httpd_index}}:{{docker_path}}"  #ACCOMPLISHED
       
