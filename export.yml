@@ -1,0 +1,47 @@
+---
+- name: Export AAP
+  hosts: 192.168.1.10
+  vars:
+      ansible_python_interpreter: /usr/bin/python3.9
+  tasks:
+  - name: Installing Galaxy Collection
+    shell: ansible-galaxy collection install awx.awx
+    register: collection
+    
+  - name: Installing awxkit
+    pip: 
+      - name: awxkit
+    register: awx
+    
+  - name: checking status for collection
+    debug:
+      var: collection.stdout_lines
+      
+  - name: checking status for AWXKIT
+    debug:
+      var: awx.stdout_lines
+      
+  - name: Export all assets
+    awx.awx.export:
+      controller_host: 192.168.1.10
+      controller_username: admin
+      controller_password: admin123
+      validate_certs: False
+      all: true
+
+  - name: Export all inventories
+    awx.awx.export:
+      controller_host: 192.168.1.10
+      controller_username: admin
+      controller_password: admin123
+      validate_certs: False
+      inventory: 'all'
+
+  - name: Export a job template named "My Template" and all Credentials
+    awx.awx.export:
+      controller_host: 192.168.1.10
+      controller_username: admin
+      controller_password: admin123
+      job_templates: "My Template"
+      validate_certs: False
+      credentials: 'all'
