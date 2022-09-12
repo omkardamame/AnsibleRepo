@@ -1,6 +1,8 @@
 ---
 - name: Export AAP
-  hosts: 192.168.1.40
+  hosts: 
+      - 192.168.1.40
+      - 192.168.1.10
   vars:
       ansible_python_interpreter: /usr/bin/python3.9
   tasks:
