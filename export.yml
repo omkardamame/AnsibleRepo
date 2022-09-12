@@ -9,8 +9,7 @@
     register: collection
     
   - name: Installing awxkit
-    pip: 
-      - name: awxkit
+    shell: pip3 install awxkit
     register: awx
     
   - name: checking status for collection
