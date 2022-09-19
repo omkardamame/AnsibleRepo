@@ -1,3 +1,16 @@
+#
+# In order to get the job templates you need to follow the respective order given in YAML file below
+# ORDER OF IMPORTS :
+# 1. Organization
+# 2. Credentials
+# 3. Inventory
+# 5. Projects 
+# 6. Templates
+# Only and Only this respective order will get you your job templates from one Cluster to another.
+#
+
+
+
 ---
 - name: Import AAP
   hosts: 192.168.1.10
